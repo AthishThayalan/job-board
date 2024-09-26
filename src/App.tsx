@@ -1,11 +1,20 @@
-import LoginPage from "./Components/Authentication/LoginPage";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./Components/authentication/LoginPage";
+import RegisterForm from "./Components/authentication/RegisterForm";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <>
-      <LoginPage />
-    </>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
