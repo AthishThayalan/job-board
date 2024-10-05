@@ -1,11 +1,12 @@
 const express = require("express");
-const router = express.Router();
 const Job = require("../models/Job");
+
+const router = express.Router();
 
 // Route to get all jobs
 router.get("/", async (req, res) => {
   try {
-    const jobs = await Job.find(); // Fetch all jobs from MongoDB
+    const jobs = await Job.find();
     res.json(jobs);
   } catch (error) {
     res.status(500).json({ message: "Error fetching jobs", error });

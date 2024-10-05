@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 interface JobProps {
   title: string;
@@ -7,14 +7,9 @@ interface JobProps {
   description: string;
 }
 
-const JobItem: React.FC<JobProps> = ({
-  title,
-  company,
-  location,
-  description,
-}) => {
+const JobItem: FC<JobProps> = ({ title, company, location, description }) => {
   return (
-    <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
+    <div className="p-4 border border-gray-300 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer hover:shadow-xl hover:border-indigo-500 hover:bg-indigo-50">
       <h3 className="text-xl font-bold text-indigo-600">{title}</h3>
       <p className="text-gray-700">
         {company} - {location}
