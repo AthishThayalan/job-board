@@ -50,6 +50,11 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="flex justify-center space-x-6">
+          <Link to="/">
+            <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+              Home
+            </button>
+          </Link>
           <Link to="/login">
             <button className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-full shadow-md hover:bg-indigo-700 transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-indigo-300">
               Log In

@@ -1,15 +1,21 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
+const authRoutes = require("./routes/auth");
 const jobRoutes = require("./routes/jobs");
-const cors = require("cors"); // Import cors
 
 const app = express();
 const port = 5000;
 
-app.use(cors()); // Enable CORS for all routes
+app.use(cors());
 
-// Middleware to parse JSON
 app.use(express.json());
+
+console.log("JWT_SECRET in server.js:", process.env.JWT_SECRET);
 
 // Connect to MongoDB
 mongoose
@@ -21,11 +27,8 @@ mongoose
   .catch((error) => console.error("Error connecting to MongoDB:", error));
 
 // Use job routes
+app.use("/auth", authRoutes);
 app.use("/jobs", jobRoutes);
-
-app.get("/", (req, res) => {
-  res.send("hello");
-});
 
 // Start the server
 app.listen(port, () => {

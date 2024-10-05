@@ -4,19 +4,22 @@ import LoginPage from "./Components/authentication/LoginPage";
 import RegisterForm from "./Components/authentication/RegisterForm";
 import LandingPage from "./Components/layout/Landing";
 import HomePage from "./pages/HomePage";
+import { AuthProvider } from "./context/AuthContext"; // Import AuthProvider
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/welcome" element={<LandingPage />} />
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/welcome" element={<LandingPage />} />
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../Components/layout/Navbar";
-import JobItem from "../Components/layout/JobItem";
+import JobList from "../Components/Job/JobList";
+import { useAuth } from "../context/AuthContext"; // Import useAuth hook
 
 interface Job {
   _id: string;
@@ -11,14 +12,13 @@ interface Job {
 }
 
 const HomePage: React.FC = () => {
+  const { user } = useAuth(); // Access user information
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
-    // Fetch jobs data from the backend
     const fetchJobs = async () => {
       try {
         const response = await fetch("http://localhost:5000/jobs");
-        console.log(response);
         const data = await response.json();
         setJobs(data);
       } catch (error) {
@@ -35,23 +35,11 @@ const HomePage: React.FC = () => {
       <div className="flex items-center justify-center p-8">
         <div className="max-w-4xl w-full">
           <h2 className="mb-6 text-3xl font-semibold text-gray-800">
-            Job Listings
+            {user
+              ? `Welcome, ${user.username}, here are some jobs for ya!`
+              : "Job Listings"}
           </h2>
-          {jobs.length > 0 ? (
-            <div className="grid gap-4">
-              {jobs.map((job) => (
-                <JobItem
-                  key={job._id}
-                  title={job.title}
-                  company={job.company}
-                  location={job.location}
-                  description={job.description}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-600">No jobs available at the moment.</p>
-          )}
+          <JobList jobs={jobs} />
         </div>
       </div>
     </div>

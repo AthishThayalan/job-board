@@ -5,9 +5,36 @@ const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      // Make a POST request to the backend
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register. Please try again.");
+      }
+
+      const data = await response.json();
+      setSuccess("Registration successful!");
+      setError(null);
+
+      window.location.href = "/login";
+    } catch (error: any) {
+      setError(error.message);
+      setSuccess(null);
+      console.error("Error registering user:", error);
+    }
   };
 
   return (
@@ -75,6 +102,14 @@ const RegisterForm: React.FC = () => {
             Register
           </button>
         </form>
+        {/* Display success or error messages */}
+        {success && (
+          <p className="mt-4 text-sm text-center text-green-600">{success}</p>
+        )}
+        {error && (
+          <p className="mt-4 text-sm text-center text-red-600">{error}</p>
+        )}
+
         <p className="mt-4 text-sm text-center text-gray-600">
           Already have an account?{" "}
           <Link to="/login" className="text-indigo-600 hover:underline">
