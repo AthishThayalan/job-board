@@ -15,8 +15,6 @@ app.use(cors());
 
 app.use(express.json());
 
-console.log("JWT_SECRET in server.js:", process.env.JWT_SECRET);
-
 // Connect to MongoDB
 mongoose
   .connect("mongodb://localhost:27017/jobListings", {

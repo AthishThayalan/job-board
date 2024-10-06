@@ -12,34 +12,40 @@ interface AuthProviderProps {
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: { username: string } | null; // Include user information
-  login: (user: { username: string }) => void;
+  user: { username: string } | null;
+  token: string | null; // Add token to the context type
+  login: (user: { username: string }, token: string) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
+  token: null, // Default value for token
   login: () => {},
   logout: () => {},
 });
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{ username: string } | null>(null); // State to store user info
+  const [user, setUser] = useState<{ username: string } | null>(null);
+  const [token, setToken] = useState<string | null>(null); // State for token
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
-    if (token && username) {
+    const storedToken = localStorage.getItem("token");
+    const storedUsername = localStorage.getItem("username");
+    if (storedToken && storedUsername) {
       setIsAuthenticated(true);
-      setUser({ username });
+      setUser({ username: storedUsername });
+      setToken(storedToken);
     }
   }, []);
 
-  const login = (user: { username: string }) => {
+  const login = (user: { username: string }, token: string) => {
     setIsAuthenticated(true);
     setUser(user);
+    setToken(token); // Set token in state
+    localStorage.setItem("token", token);
     localStorage.setItem("username", user.username);
     window.location.href = "/";
   };
@@ -49,11 +55,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("username");
     setIsAuthenticated(false);
     setUser(null);
+    setToken(null); // Clear token
     window.location.href = "/welcome";
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, token, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

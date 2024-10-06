@@ -5,6 +5,9 @@ const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [description, setDescription] = useState("");
+  const [profileImage, setProfileImage] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -18,7 +21,14 @@ const RegisterForm: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          displayName: displayName || undefined, // Set to undefined if not provided
+          description: description || undefined, // Set to undefined if not provided
+          profileImage: profileImage || undefined, // Set to undefined if not provided
+        }),
       });
 
       if (!response.ok) {
@@ -44,6 +54,7 @@ const RegisterForm: React.FC = () => {
           Create an Account
         </h2>
         <form onSubmit={handleSubmit}>
+          {/* Username Field */}
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -61,6 +72,8 @@ const RegisterForm: React.FC = () => {
               required
             />
           </div>
+
+          {/* Email Field */}
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -78,7 +91,9 @@ const RegisterForm: React.FC = () => {
               required
             />
           </div>
-          <div className="mb-6">
+
+          {/* Password Field */}
+          <div className="mb-4">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
@@ -95,6 +110,61 @@ const RegisterForm: React.FC = () => {
               required
             />
           </div>
+
+          {/* Display Name Field (Optional) */}
+          <div className="mb-4">
+            <label
+              htmlFor="displayName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Display Name (Optional)
+            </label>
+            <input
+              type="text"
+              id="displayName"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Enter your display name"
+              className="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Description Field (Optional) */}
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Description (Optional)
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter your description"
+              className="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Profile Image URL Field (Optional) */}
+          <div className="mb-4">
+            <label
+              htmlFor="profileImage"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Profile Image URL (Optional)
+            </label>
+            <input
+              type="text"
+              id="profileImage"
+              value={profileImage}
+              onChange={(e) => setProfileImage(e.target.value)}
+              placeholder="Enter your profile image URL"
+              className="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full p-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -102,6 +172,7 @@ const RegisterForm: React.FC = () => {
             Register
           </button>
         </form>
+
         {/* Display success or error messages */}
         {success && (
           <p className="mt-4 text-sm text-center text-green-600">{success}</p>

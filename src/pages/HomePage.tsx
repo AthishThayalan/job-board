@@ -30,7 +30,9 @@ const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen pt-16">
+      {" "}
+      {/* Add padding-top here */}
       <NavBar />
       <div className="flex items-center justify-center p-8">
         <div className="max-w-4xl w-full">

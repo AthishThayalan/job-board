@@ -23,12 +23,16 @@ const LoginPage: React.FC = () => {
         throw new Error("Invalid credentials. Please try again.");
 
       const data = await response.json();
+
+      // Save token to local storage and call login
       localStorage.setItem("token", data.token);
-      login({ username: data.user.username });
+      login({ username: data.user.username }, data.token); // Include token here
 
       // Redirect or navigate to another page
+      window.location.href = "/"; // Example navigation to home page
     } catch (error: any) {
       console.error("Error logging in:", error);
+      setError(error.message);
     }
   };
 
